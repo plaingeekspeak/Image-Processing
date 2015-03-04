@@ -1,4 +1,4 @@
-%This program will identify and measure muscle fasicle lengths
+%This programcalculates muscle/tendon displacements and velocities
 %By Leela Goel
 
 close all
@@ -83,19 +83,14 @@ pix_per_cm = distance; %gets distance value from exporting line variable
 max_pix_disp = round(10 * (1/frame_rate) * pix_per_cm); % 10cm/s is from maximum possible tendon displacement
 
 %%
-%define blocks for comparison on next page 
+%define blocks for comparison on next frame 
 
 for i = 1:a-1
     
     %find maximum correlation coefficient
     %then determine new reference box
     %repeat box of interest/neighborhood calculations
-    
-    %if i >1
-     %   boi = 
-        
-    %for j = 1:max_pix_disp
-    
+  
     j = 1;
      while j < max_pix_disp   
         %move box up vertically
