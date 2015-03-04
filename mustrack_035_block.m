@@ -1,4 +1,5 @@
 %This program will identify and measure muscle fasicle lengths
+%By Leela Goel
 
 close all
 clear
