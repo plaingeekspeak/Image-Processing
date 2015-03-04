@@ -224,6 +224,10 @@ end
 
 mus_disp = pix_disp / pix_per_cm; 
 
+%Calculates total displacement
+
+tot_disp = sum(mus_disp)
+
 %%
 %Converts displacements into velocities (cm/s)
 
