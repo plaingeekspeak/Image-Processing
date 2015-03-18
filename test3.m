@@ -7,7 +7,7 @@ clc
 
 %Input video of interest
 %input image name
-img_name = input('Name of file? ', 's'); %include file tree and/or extension
+img_name = '1cm.avi'; %include file tree and/or extension
 
 %store image
 img = VideoReader(img_name);
@@ -31,22 +31,22 @@ for i = 1 : a
     
     %Crops image
         if i == 1
-            fprintf('(1)MEASURE SCALE FIRST, export to workspace and name it pix_per_cm; (2)DONT FORGET TO COPY YOUR IMAGE POSITION!!!!') %need to copy this position by right clicking on selected croped area before double clicking
-            pause
+            %fprintf('(1)MEASURE SCALE FIRST, export to workspace and name it pix_per_cm; (2)DONT FORGET TO COPY YOUR IMAGE POSITION!!!!') %need to copy this position by right clicking on selected croped area before double clicking
+            %pause
     
             %select box for cropping vid
-            img_acc2(i).cdata = imcrop(img_acc(i).cdata);
+            img_acc2(i).cdata = imcrop(img_acc(i).cdata,[2.815000000000000e+02,2.515000000000000e+02,837,606]);
             
             %Determine conversion factor from centimeters to pixels
             %Be sure to measure 1cm from scale on ultrasound vid
-            meas_pix_per_cm = imdistline; %measures scale
-            pause
+            %meas_pix_per_cm = imdistline; %measures scale
+            %pause
             
             % **** EXPORT TO WORKSPACE, CREATE NEW VARIALE 'pix_per_cm' TO
             % USE FOR UNIT CONVERSION
             
             %continue cropping
-            im_size = input('Paste your matrix size here'); %hit ctr v or mac equivalent
+            im_size = [2.815000000000000e+02,2.515000000000000e+02,837,606]; %hit ctr v or mac equivalent
             img_acc2(i).colormap = gray; 
         else
             img_acc2(i).cdata = imcrop(img_acc(i).cdata, im_size-1);
@@ -75,12 +75,12 @@ clear meas_pix_per_cm
 %Specify block of interest
 
 frame1 = imshow(img_acc2(1).cdata); %specify first frame for initial region of interest
-boi = getrect; %defines coordinates for original block
+boi = [604,99,23,29]; %defines coordinates for original block
 init_boi = boi; %stores initial boi, for testing purposes
 
 %%
 % Determine neighborhood of pixels
-pix_per_cm = distance; %gets distance value from exporting line variable
+pix_per_cm = 167; %gets distance value from exporting line variable
 max_pix_disp = round(10 * (1/frame_rate) * pix_per_cm); % 10cm/s is from maximum possible tendon displacement
 
 %%
@@ -228,6 +228,7 @@ mus_disp = pix_disp / pix_per_cm;
 %Calculates total displacement
 
 tot_disp = sum(mus_disp)
+init_boi
 
 %%
 %Converts displacements into velocities (cm/s)

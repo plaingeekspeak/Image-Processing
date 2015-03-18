@@ -93,7 +93,7 @@ for i = 1:a-1
     %repeat box of interest/neighborhood calculations
   
     j = 1;
-     while j < max_pix_disp   
+     while j < max_pix_disp/2   
         %move box up vertically
         
         if (boi(1)) < (im_size(3)) && (boi(2) - (j-1)) < (im_size(4)) %check if box is inbounds of image
@@ -161,7 +161,7 @@ for i = 1:a-1
         
     m = 1;
     
-    while m<(2*max_pix_disp)
+    while m<(2*max_pix_disp)/2
         
         %move box down vertically
         if (boi(1)) < (im_size(3)) && (boi(2) + (m-1)) < (im_size(4)) %check if box is inbounds of image
