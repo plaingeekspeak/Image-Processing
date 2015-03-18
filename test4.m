@@ -1,5 +1,4 @@
 %This programcalculates muscle/tendon displacements and velocities
-%% **Only moves in horizontal direction
 %By Leela Goel
 
 close all
@@ -8,7 +7,7 @@ clc
 
 %Input video of interest
 %input image name
-img_name = input('Name of file? ', 's'); %include file tree and/or extension
+img_name = '1cm.avi'; %include file tree and/or extension
 
 %store image
 img = VideoReader(img_name);
@@ -32,22 +31,22 @@ for i = 1 : a
     
     %Crops image
         if i == 1
-            fprintf('(1)MEASURE SCALE FIRST, export to workspace and name it pix_per_cm; (2)DONT FORGET TO COPY YOUR IMAGE POSITION!!!!') %need to copy this position by right clicking on selected croped area before double clicking
-            pause
+            %fprintf('(1)MEASURE SCALE FIRST, export to workspace and name it pix_per_cm; (2)DONT FORGET TO COPY YOUR IMAGE POSITION!!!!') %need to copy this position by right clicking on selected croped area before double clicking
+            %pause
     
             %select box for cropping vid
-            img_acc2(i).cdata = imcrop(img_acc(i).cdata);
+            img_acc2(i).cdata = imcrop(img_acc(i).cdata,[2.815000000000000e+02,2.515000000000000e+02,837,606]);
             
             %Determine conversion factor from centimeters to pixels
             %Be sure to measure 1cm from scale on ultrasound vid
-            meas_pix_per_cm = imdistline; %measures scale
-            pause
+            %meas_pix_per_cm = imdistline; %measures scale
+            %pause
             
             % **** EXPORT TO WORKSPACE, CREATE NEW VARIALE 'pix_per_cm' TO
             % USE FOR UNIT CONVERSION
             
             %continue cropping
-            im_size = input('Paste your matrix size here'); %hit ctr v or mac equivalent
+            im_size = [2.815000000000000e+02,2.515000000000000e+02,837,606]; %hit ctr v or mac equivalent
             img_acc2(i).colormap = gray; 
         else
             img_acc2(i).cdata = imcrop(img_acc(i).cdata, im_size-1);
@@ -81,7 +80,7 @@ init_boi = boi; %stores initial boi, for testing purposes
 
 %%
 % Determine neighborhood of pixels
-pix_per_cm = distance; %gets distance value from exporting line variable
+pix_per_cm = 167; %gets distance value from exporting line variable
 max_pix_disp = round(10 * (1/frame_rate) * pix_per_cm); % 10cm/s is from maximum possible tendon displacement
 
 %%
@@ -99,11 +98,11 @@ for i = 1:a-1
     while k<max_pix_disp
         
         %move box left horizontally
-        if (boi(2)) < (im_size(4)) && (boi(1) - (k-1)) < (im_size(3)) %check if box is inbounds of image
+        if (boi(2)) < (im_size(4)) && (boi(1) - (k)) < (im_size(3)) %check if box is inbounds of image
             
             ref_boi(1).cdata = imcrop(img_acc2(i).cdata, boi); %define reference image
 
-            c_boi(k).cdata = imcrop(img_acc2(i+1).cdata, [boi(1)- (k-1), boi(2), boi(3), boi(4)]); %get reference block of next frame, fix vertical position from previous motion & block size
+            c_boi(k).cdata = imcrop(img_acc2(i+1).cdata, [boi(1)- (k), boi(2), boi(3), boi(4)]); %get reference block of next frame, fix vertical position from previous motion & block size
             %if j == max_pix_disp
            %corr_coeff(j) = corr_coeff(j-1);
             
@@ -115,20 +114,22 @@ for i = 1:a-1
             corr_coeff(k) = 0;
         end
         
+        if k>1
              if corr_coeff(numel(corr_coeff)) < corr_coeff(numel(corr_coeff) -1)
                 
-                k_count_cc = k - 1;
-                k_ref = k - 1;
+                k_count_cc = k ;
+                k_ref = k ;
                 k = max_pix_disp;
                 
              end
-             k = k +1;
+        end
+                 k = k +1;
+                 
     end
         
         pix_disp(i) = k_ref; %calculates pixel displacemtn
         boi = [boi(1)- k_ref, boi(2), boi(3), boi(4)]; %creates new corresponding box of interest
 end
-
    
 %%
 %Convert displacements into centimeters
@@ -138,6 +139,7 @@ mus_disp = pix_disp / pix_per_cm;
 %Calculates total displacement
 
 tot_disp = sum(mus_disp)
+init_boi
 
 %%
 %Converts displacements into velocities (cm/s)

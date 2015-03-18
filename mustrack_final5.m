@@ -1,5 +1,6 @@
 %This programcalculates muscle/tendon displacements and velocities
-%% **Only moves in horizontal direction
+% **Only moves in horizontal direction
+% **Assumes continuously moves
 %By Leela Goel
 
 close all
@@ -99,11 +100,11 @@ for i = 1:a-1
     while k<max_pix_disp
         
         %move box left horizontally
-        if (boi(2)) < (im_size(4)) && (boi(1) - (k-1)) < (im_size(3)) %check if box is inbounds of image
+        if (boi(2)) < (im_size(4)) && (boi(1) - (k)) < (im_size(3)) %check if box is inbounds of image
             
             ref_boi(1).cdata = imcrop(img_acc2(i).cdata, boi); %define reference image
 
-            c_boi(k).cdata = imcrop(img_acc2(i+1).cdata, [boi(1)- (k-1), boi(2), boi(3), boi(4)]); %get reference block of next frame, fix vertical position from previous motion & block size
+            c_boi(k).cdata = imcrop(img_acc2(i+1).cdata, [boi(1)- (k), boi(2), boi(3), boi(4)]); %get reference block of next frame, fix vertical position from previous motion & block size
             %if j == max_pix_disp
            %corr_coeff(j) = corr_coeff(j-1);
             
@@ -118,8 +119,8 @@ for i = 1:a-1
         if k>1
              if corr_coeff(numel(corr_coeff)) < corr_coeff(numel(corr_coeff) -1)
                 
-                k_count_cc = k - 1;
-                k_ref = k - 1;
+                k_count_cc = k ;
+                k_ref = k ;
                 k = max_pix_disp;
                 
              end
