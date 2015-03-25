@@ -1,6 +1,6 @@
 %This programcalculates muscle/tendon displacements and velocities
 % **Only moves in horizontal direction
-% **Assumes continuously moves
+% **Assumes continuous movement
 %By Leela Goel
 
 close all
@@ -117,13 +117,14 @@ for i = 1:a-1
         end
         
         if k>1
-             if corr_coeff(numel(corr_coeff)) < corr_coeff(numel(corr_coeff) -1)
                 
-                k_count_cc = k ;
-                k_ref = k ;
+                k_count_cc = k-1 ;
+                k_ref = k-1 ;
                 k = max_pix_disp;
                 
              end
+             
+        else k_ref = k
         end
                  k = k +1;
                  
