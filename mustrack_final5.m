@@ -117,6 +117,7 @@ for i = 1:a-1
         end
         
         if k>1
+             if corr_coeff((k)) < corr_coeff(k -1)
                 
                 k_count_cc = k-1 ;
                 k_ref = k-1 ;
