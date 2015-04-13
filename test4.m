@@ -1,4 +1,5 @@
 %This programcalculates muscle/tendon displacements and velocities
+%need to change img_name, imcrop matrice (BOI), and pix_per_cm for testing
 %By Leela Goel
 
 close all
@@ -115,13 +116,15 @@ for i = 1:a-1
         end
         
         if k>1
-             if corr_coeff(numel(corr_coeff)) < corr_coeff(numel(corr_coeff) -1)
+             if corr_coeff((k)) < corr_coeff(k -1)
                 
-                k_count_cc = k ;
-                k_ref = k ;
+                k_count_cc = k-1 ;
+                k_ref = k-1 ;
                 k = max_pix_disp;
                 
              end
+             
+        else k_ref = k;
         end
                  k = k +1;
                  
@@ -129,7 +132,10 @@ for i = 1:a-1
         
         pix_disp(i) = k_ref; %calculates pixel displacemtn
         boi = [boi(1)- k_ref, boi(2), boi(3), boi(4)]; %creates new corresponding box of interest
+        
+        clear corr_coeff
 end
+
    
 %%
 %Convert displacements into centimeters

@@ -125,7 +125,7 @@ for i = 1:a-1
                 
              end
              
-        else k_ref = k
+        else k_ref = k;
         end
                  k = k +1;
                  
