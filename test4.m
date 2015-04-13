@@ -1,5 +1,5 @@
 %This programcalculates muscle/tendon displacements and velocities
-%need to change img_name, imcrop matrice (BOI), and pix_per_cm for testing
+%need to change img_name, im_size, and pix_per_cm for testing
 %By Leela Goel
 
 close all
@@ -8,7 +8,9 @@ clc
 
 %Input video of interest
 %input image name
-img_name = '1cm.avi'; %include file tree and/or extension
+img_name = '0_5cm_4_8_2015.avi'; %include file tree and/or extension
+im_size = [2.815000000000000e+02,2.515000000000000e+02,838,573];
+pix_per_cm = 163; %gets distance value from exporting line variable
 
 %store image
 img = VideoReader(img_name);
@@ -36,7 +38,7 @@ for i = 1 : a
             %pause
     
             %select box for cropping vid
-            img_acc2(i).cdata = imcrop(img_acc(i).cdata,[2.815000000000000e+02,2.515000000000000e+02,837,606]);
+            img_acc2(i).cdata = imcrop(img_acc(i).cdata, im_size);
             
             %Determine conversion factor from centimeters to pixels
             %Be sure to measure 1cm from scale on ultrasound vid
@@ -47,7 +49,7 @@ for i = 1 : a
             % USE FOR UNIT CONVERSION
             
             %continue cropping
-            im_size = [2.815000000000000e+02,2.515000000000000e+02,837,606]; %hit ctr v or mac equivalent
+            %im_size = [2.815000000000000e+02,2.515000000000000e+02,837,606]; %hit ctr v or mac equivalent
             img_acc2(i).colormap = gray; 
         else
             img_acc2(i).cdata = imcrop(img_acc(i).cdata, im_size-1);
@@ -81,7 +83,7 @@ init_boi = boi; %stores initial boi, for testing purposes
 
 %%
 % Determine neighborhood of pixels
-pix_per_cm = 167; %gets distance value from exporting line variable
+%pix_per_cm = 167; %gets distance value from exporting line variable
 max_pix_disp = round(10 * (1/frame_rate) * pix_per_cm); % 10cm/s is from maximum possible tendon displacement
 
 %%
